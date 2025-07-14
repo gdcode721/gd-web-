@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Godawari Web Technologies</title>
+
+  <!-- Font Awesome CDN for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background: #f0f2f5;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #1e1e2f;
+      padding: 15px 20px;
+      color: white;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .logo {
+      font-size: 1.6rem;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 25px;
+    }
+
+    nav ul li a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    nav ul li a:hover {
+      color: #ffd700;
+    }
+
+    .hamburger {
+      display: none;
+      font-size: 26px;
+      cursor: pointer;
+    }
+
+    /* Sidebar Style */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: -100%;
+      width: 250px;
+      height: 100%;
+      background-color: #2c2c3e;
+      padding: 60px 20px;
+      transition: left 0.3s ease-in-out;
+      z-index: 999;
+      box-shadow: 4px 0 15px rgba(0,0,0,0.3);
+    }
+
+    .sidebar.active {
+      left: 0;
+    }
+
+    .sidebar ul {
+      list-style: none;
+    }
+
+    .sidebar ul li {
+      margin: 25px 0;
+    }
+
+    .sidebar ul li a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 10px;
+      border-radius: 5px;
+      transition: background 0.3s;
+    }
+
+    .sidebar ul li a:hover {
+      background-color: #3f3f57;
+    }
+
+    /* Responsive for Mobile */
+    @media (max-width: 768px) {
+      nav ul {
+        display: none;
+      }
+      .hamburger {
+        display: block;
+      }
+    }
+   
+
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      padding: 60px 40px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .left-content {
+      flex: 1;
+      min-width: 320px;
+      max-width: 600px;
+    }
+
+    .left-content h1 {
+      font-size: 36px;
+      color: #f5a100;
+      font-weight: 700;
+    }
+
+    .left-content h1 span {
+      color: #0a0a23;
+    }
+
+    .left-content h3 {
+      color: #0a0a23;
+      font-weight: 600;
+      margin-top: 10px;
+    }
+
+    .left-content h2 {
+      font-size: 24px;
+      margin-top: 20px;
+    }
+
+    .highlight {
+      color: #f5a100;
+      font-weight: bold;
+    }
+
+    .left-content p {
+      font-size: 17px;
+      margin-top: 20px;
+      line-height: 1.6;
+    }
+
+    .quote-btn {
+      display: inline-block;
+      background-color: #f5a100;
+      color: #000;
+      padding: 14px 30px;
+      border-radius: 30px;
+      margin-top: 30px;
+      font-weight: bold;
+      text-decoration: none;
+      transition: background 0.3s ease;
+    }
+
+    .quote-btn i {
+      margin-right: 8px;
+    }
+
+    .quote-btn:hover {
+      background-color: #ffbf30;
+    }
+
+    .right-image {
+      flex: 1;
+      min-width: 320px;
+      max-width: 500px;
+      text-align: center;
+      position: relative;
+    }
+
+    .right-image img {
+      width: 100%;
+      border-radius: 10px;
+    }
+
+    .social-icons {
+      position: absolute;
+      top: 20px;
+      right: -40px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .social-icons a {
+      color: #f5a100;
+      font-size: 20px;
+      text-decoration: none;
+    }
+
+    @media screen and (max-width: 768px) {
+      .container {
+        flex-direction: column;
+        padding: 40px 20px;
+      }
+
+      .right-image {
+        margin-top: 40px;
+        position: static;
+      }
+
+      .social-icons {
+        position: static;
+        flex-direction: row;
+        justify-content: center;
+        margin-top: 20px;
+      }
+    }
+ .service-section {
+      text-align: center;
+      padding: 60px 20px;
+    }
+
+    .service-section h2 {
+      font-size: 32px;
+      color: #0a0a23;
+      margin-bottom: 10px;
+    }
+
+    .service-section p {
+      font-size: 18px;
+      color: #444;
+      max-width: 800px;
+      margin: auto;
+    }
+
+    .cards-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 40px;
+    }
+
+    .card {
+      background: #fff;
+      width: 300px;
+      padding: 30px 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+      transition: 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card i {
+      font-size: 36px;
+      color: #f5a100;
+      margin-bottom: 15px;
+    }
+
+    .card h3 {
+      font-size: 20px;
+      color: #111;
+      margin-bottom: 15px;
+    }
+
+    .card p {
+      font-size: 16px;
+      color: #333;
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+
+    .start-btn {
+      background: #f5a100;
+      padding: 10px 25px;
+      color: #000;
+      font-weight: bold;
+      text-decoration: none;
+      border-radius: 30px;
+      transition: 0.3s ease;
+      display: inline-block;
+    }
+
+    .start-btn:hover {
+      background: #ffbf30;
+    }
+
+    @media (max-width: 768px) {
+      .cards-container {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+ 
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #fff;
+    }
+
+    .stats-section {
+      background-color: #fef7e9;
+      padding: 60px 20px;
+      text-align: center;
+    }
+
+    .stats-section h2 {
+      font-size: 36px;
+      color: #0a0a23;
+      margin-bottom: 10px;
+    }
+
+    .stats-section p {
+      font-size: 18px;
+      color: #222;
+      margin-bottom: 50px;
+    }
+
+    .stats-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 40px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .stat-box {
+      flex: 1 1 180px;
+      min-width: 180px;
+    }
+
+    .stat-number {
+      font-size: 36px;
+      font-weight: bold;
+      color: #111;
+      margin-bottom: 10px;
+    }
+
+    .stat-label {
+      font-size: 16px;
+      color: #555;
+    }
+
+    @media (max-width: 768px) {
+      .stat-box {
+        min-width: 45%;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .stat-box {
+        min-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">GD Web Tech</div>
+    <nav>
+      <ul>
+        <li><a href="#"><i class="fas fa-house"></i> Home</a></li>
+        <li><a href="#"><i class="fas fa-folder-open"></i> Projects</a></li>
+        <li><a href="#"><i class="fas fa-users"></i> Clients</a></li>
+        <li><a href="#"><i class="fas fa-right-to-bracket"></i> Login</a></li>
+        <li><a href="#"><i class="fas fa-circle-info"></i> About</a></li>
+        <li><a href="#"><i class="fas fa-phone"></i> Contact</a></li>
+      </ul>
+    </nav>
+    <div class="hamburger" onclick="toggleSidebar()"><i class="fas fa-bars"></i></div>
+  </header>
+
+  <div class="sidebar" id="sidebar">
+    <ul>
+      <li><a href="#"><i class="fas fa-house"></i> Home</a></li>
+      <li><a href="#"><i class="fas fa-folder-open"></i> Projects</a></li>
+      <li><a href="#"><i class="fas fa-users"></i> Clients</a></li>
+      <li><a href="#"><i class="fas fa-right-to-bracket"></i> Login</a></li>
+      <li><a href="#"><i class="fas fa-circle-info"></i> About</a></li>
+      <li><a href="#"><i class="fas fa-phone"></i> Contact</a></li>
+    </ul>
+  </div>
+
+
+   <section class="container">
+    <div class="left-content">
+      <h1>Website Design Company <span>Indore</span></h1>
+      <h3>Your Premier Destination for Website Design & Development Solutions.</h3>
+      <h2><strong>Discover Websoft:</strong> <span class="highlight">Where Innovation meets Technology</span></h2>
+      <p>
+        Are you in search of a reliable partner to elevate your online presence? Look no further than
+        <strong>Discover Websoft</strong>, your trusted <strong>website design company in Indore</strong>,
+        offering expert design and development services. With over 10 years of industry experience, our
+        <strong>web designing company in Indore</strong> specializes in unmatched web development and digital
+        marketing solutions tailored to your unique business needs.
+      </p>
+      <a href="#" class="quote-btn"><i class="fas fa-circle-plus"></i> GET A FREE QUOTE</a>
+    </div>
+
+    <div class="right-image">
+      <img src="https://images.pexels.com/photos/374016/pexels-photo-374016.jpeg" alt="Website Design">
+      <div class="social-icons">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+      </div>
+    </div>
+  </section>
+  
+
+   <section class="service-section">
+    <h2>How can we help you?</h2>
+    <p>
+      At Discover Websoft, we understand the importance of a captivating online presence in today’s digital landscape.
+    </p>
+
+    <div class="cards-container">
+      <!-- Card 1 -->
+      <div class="card">
+        <i class="fas fa-desktop"></i>
+        <h3>Website Designing</h3>
+        <p>We specialize in web designing, concept creativity, layout creation, and custom product strategies.</p>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSd2r4gZpAw8HEdLF8-7xnnFbc_mBGf6Qqfcu5rWTCQNtPppFQ/viewform?usp=header" class="start-btn">START NOW</a>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="card">
+        <i class="fas fa-code"></i>
+        <h3>Website Development</h3>
+        <p>We develop robust websites using PHP, WordPress, HTML, CSS, Bootstrap — tailored to your brand.</p>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSd2r4gZpAw8HEdLF8-7xnnFbc_mBGf6Qqfcu5rWTCQNtPppFQ/viewform?usp=header" class="start-btn">START NOW</a>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="card">
+        <i class="fas fa-cart-shopping"></i>
+        <h3>E-commerce Web Design</h3>
+        <p>We offer premium e-commerce development solutions that help you sell smarter online.</p>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSd2r4gZpAw8HEdLF8-7xnnFbc_mBGf6Qqfcu5rWTCQNtPppFQ/viewform?usp=header" class="start-btn">START NOW</a>
+      </div>
+    </div>
+  </section>
+
+ 
+
+
+  <section class="stats-section">
+    <h2>Our Statistics</h2>
+    <p>With our finger on the pulse of the latest industry trends and technologies</p>
+
+    <div class="stats-container">
+      <div class="stat-box">
+        <div class="stat-number">10+</div>
+        <div class="stat-label">Years of Experience</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-number">1,200+</div>
+        <div class="stat-label">Happy Clients</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-number">15+</div>
+        <div class="stat-label">Team Members</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-number">5+</div>
+        <div class="stat-label">Projects Completed</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-number">2+</div>
+        <div class="stat-label">Years in CSE (Computer Science)</div>
+      </div>
+    </div>
+  </section>
+
+
+
+  <script>
+    function toggleSidebar() {
+      document.getElementById("sidebar").classList.toggle("active");
+    }
+  </script>
+
+</body>
+</html>
