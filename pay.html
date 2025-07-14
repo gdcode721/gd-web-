@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Client Payment - GD Web Tech</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+    body { background: #f2f2f2; padding: 20px; }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: white;
+      padding: 25px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      border-radius: 10px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #1e1e2f;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      color: #333;
+      font-weight: 500;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .details {
+      margin-top: 25px;
+      padding: 15px;
+      background: #f9f9f9;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+    }
+
+    .details p {
+      margin-bottom: 12px;
+      font-size: 15px;
+      color: #333;
+    }
+
+    .paid { color: green; }
+    .unpaid { color: red; }
+
+    .installment {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px;
+      border: 1px solid #ccc;
+      margin-top: 10px;
+      border-radius: 5px;
+      background-color: #fff;
+    }
+
+    .installment button {
+      padding: 8px 14px;
+      background-color: #1e1e2f;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .installment button:disabled {
+      background: #888;
+      cursor: not-allowed;
+    }
+
+    .link {
+      margin-top: 5px;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Client Payment Panel</h2>
+
+    <div class="form-group">
+      <label for="clientId">Enter Client ID</label>
+      <input type="text" id="clientId" placeholder="e.g. GD01AV" onkeyup="showDetails()">
+    </div>
+
+    <div class="details" id="clientDetails" style="display: none;">
+      <p><strong>Name:</strong> <span id="name"></span></p>
+      <p><strong>Total Project Cost:</strong> ₹<span id="total"></span></p>
+      <p><strong>Total Installments:</strong> 4 (₹<span id="each"></span> each)</p>
+      <p><strong>Paid:</strong> ₹<span id="paid" class="paid"></span></p>
+      <p><strong>Remaining:</strong> ₹<span id="remain" class="unpaid"></span></p>
+
+      <div id="installments"></div>
+    </div>
+  </div>
+
+  <script>
+    const clientData = {
+      id: "GD01AV",
+      name: "Arun Verma",
+      total: 8999,
+      installments: 4,
+      payments: [false, false, false, false],
+      paymentLinks: [
+        "https://rzp.io/l/installment1",
+        "https://rzp.io/l/installment2",
+        "https://rzp.io/l/installment3",
+        "https://rzp.io/l/installment4"
+      ]
+    };
+
+    const storageKey = "clientPayments_" + clientData.id;
+
+    // Load from localStorage
+    const saved = localStorage.getItem(storageKey);
+    if (saved) {
+      clientData.payments = JSON.parse(saved);
+    }
+
+    function showDetails() {
+      const enteredId = document.getElementById("clientId").value.trim();
+      const panel = document.getElementById("clientDetails");
+
+      if (enteredId === clientData.id) {
+        const eachInstallment = (clientData.total / clientData.installments).toFixed(2);
+        const paidCount = clientData.payments.filter(p => p).length;
+        const paidAmount = (paidCount * eachInstallment).toFixed(2);
+        const remainingAmount = (clientData.total - paidAmount).toFixed(2);
+
+        document.getElementById("name").textContent = clientData.name;
+        document.getElementById("total").textContent = clientData.total;
+        document.getElementById("each").textContent = eachInstallment;
+        document.getElementById("paid").textContent = paidAmount;
+        document.getElementById("remain").textContent = remainingAmount;
+
+        let installmentHTML = "";
+        for (let i = 0; i < clientData.installments; i++) {
+          const status = clientData.payments[i] ? "Paid" : "Pay Now";
+          const btnDisabled = clientData.payments[i] ? "disabled" : "";
+          const paymentLink = clientData.paymentLinks[i];
+
+          installmentHTML += `
+            <div class="installment">
+              <span>Installment ${i + 1} - ₹${eachInstallment}</span>
+              <div>
+                <button ${btnDisabled} onclick="pay(${i})">${status}</button>
+                ${!clientData.payments[i] ? `<div class="link"><a href="${paymentLink}" target="_blank">Click to Pay</a></div>` : ""}
+              </div>
+            </div>
+          `;
+        }
+
+        document.getElementById("installments").innerHTML = installmentHTML;
+        panel.style.display = "block";
+      } else {
+        panel.style.display = "none";
+      }
+    }
+
+    function pay(index) {
+      clientData.payments[index] = true;
+      localStorage.setItem(storageKey, JSON.stringify(clientData.payments));
+      alert(`Installment ${index + 1} marked as paid!`);
+      showDetails();
+    }
+  </script>
+
+</body>
+</html>
